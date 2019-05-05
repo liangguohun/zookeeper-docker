@@ -32,10 +32,14 @@ RUN set -ex; \
     apk add --no-cache --virtual .build-deps \
         ca-certificates \
         gnupg \
-        libressl; \
-    wget -q "https://www.apache.org/dist/zookeeper/$DISTRO_NAME/$DISTRO_NAME.tar.gz"; \
-    wget -q "https://www.apache.org/dist/zookeeper/$DISTRO_NAME/$DISTRO_NAME.tar.gz.asc"; \
-    export GNUPGHOME="$(mktemp -d)"; \
+        libressl;
+#    wget -q "https://www.apache.org/dist/zookeeper/$DISTRO_NAME/$DISTRO_NAME.tar.gz"; \
+#    wget -q "https://www.apache.org/dist/zookeeper/$DISTRO_NAME/$DISTRO_NAME.tar.gz.asc"; \
+
+COPY zookeeper-3.4.14.tar.gz.asc	/
+COPY zookeeper-3.4.14.tar.gz	/
+
+RUN export GNUPGHOME="$(mktemp -d)"; \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-key "$GPG_KEY" || \
     gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEY" || \
     gpg --keyserver keyserver.pgp.com --recv-keys "$GPG_KEY"; \
